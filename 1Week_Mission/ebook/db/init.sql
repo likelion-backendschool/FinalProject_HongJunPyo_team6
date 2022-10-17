@@ -6,4 +6,4 @@ USE eBooks_test;
 # 개발 DB 생성
 DROP DATABASE IF EXISTS eBooks_dev;
 CREATE DATABASE eBooks_dev;
-Use eBooks_dev;
+USE eBooks_dev;
