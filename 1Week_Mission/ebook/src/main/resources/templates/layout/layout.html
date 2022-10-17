@@ -70,6 +70,18 @@
                     프로파일
                 </span>
             </a>
+            <a href="/post/write" class="inline-flex" sec:authorize="isAuthenticated()">
+                <i class="fa-solid fa-pen"></i>
+                <span class="ml-[2px] hidden sm:block">
+                    글쓰기
+                </span>
+            </a>
+            <a href="/post/list" class="inline-flex">
+                <i class="fa-solid fa-rectang-list"></i>
+                <span class="ml-[2px] hidden sm:block">
+                    글목록
+                </span>
+            </a>
         </div>
     </div>
 </header>
