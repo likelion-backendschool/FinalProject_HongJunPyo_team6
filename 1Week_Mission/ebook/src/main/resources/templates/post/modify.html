@@ -2,16 +2,16 @@
 <html layout:decorate="~{layout/layout.html}">
 
 <head>
-    <title>글쓰기</title>
+    <title>글수정</title>
 </head>
 
 <body>
 <section layout:fragment="content">
     <div class="container">
-        <h1>글쓰기</h1>
+        <h1>글수정</h1>
 
         <script>
-            function WriteForm__submit(form) {
+            function ModifyForm__submit(form) {
                 form.subject.value = form.subject.value.trim();
 
                 if (form.subject.value.length == 0) {
@@ -34,19 +34,19 @@
         </script>
 
 
-        <form th:action method="POST" enctype="multipart/form-data" onsubmit="WriteForm__submit(this); return false;">
+        <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
             <div>
                 <span>제목</span>
-                <input type="text" name="subject">
+                <input type="text" name="subject" th:value="${post.subject}">
             </div>
             <div>
                 <span>내용</span>
-                <textarea name="content"></textarea>
+                <textarea name="content" th:text="${post.content}"></textarea>
             </div>
 
             <div>
-                <span>글쓰기</span>
-                <input type="submit" value="작성">
+                <span>글수정</span>
+                <input type="submit" value="수정">
             </div>
         </form>
     </div>

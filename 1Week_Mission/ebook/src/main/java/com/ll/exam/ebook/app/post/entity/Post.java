@@ -28,4 +28,13 @@ public class Post extends BaseEntity {
     @Column(name = "delete_yn")
     @JsonIgnore
     private DeleteType deleteYn;
+
+    public Post(long id) {
+        super(id);
+    }
+
+    public void modifyPost(String subject, String content) {
+        this.subject = subject;
+        this.content = content;
+    }
 }

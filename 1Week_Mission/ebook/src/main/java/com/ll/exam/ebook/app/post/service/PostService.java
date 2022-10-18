@@ -4,7 +4,9 @@ import com.ll.exam.ebook.app.member.entity.Member;
 import com.ll.exam.ebook.app.post.entity.DeleteType;
 import com.ll.exam.ebook.app.post.entity.Post;
 import com.ll.exam.ebook.app.post.exception.DataNotFoundException;
+import com.ll.exam.ebook.app.post.form.PostModifyForm;
 import com.ll.exam.ebook.app.post.repository.PostRepository;
+import com.ll.exam.ebook.app.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,6 +57,14 @@ public class PostService {
         return post;
     }
 
+    public Post findByPostId(Long id) {
+        return postRepository.findById(id).orElse(null);
+    }
+
+    public List<Post> findAllPost() {
+        return postRepository.findAll();
+    }
+
     @Transactional
     public boolean modify(Long postId, String subject, String content) {
 
@@ -84,6 +94,11 @@ public class PostService {
             article.setDeleteYn(DeleteType.DELETE);
             return true;
         }
+    }
+
+    @Transactional
+    public void deletePost(Post post) {
+        postRepository.delete(post);
     }
 
 

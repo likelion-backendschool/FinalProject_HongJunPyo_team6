@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>글 상세페이지</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="container">
+        <h1>글 상세페이지</h1>
+
+        <div>
+            작성 : [[${post.createDate}]]
+        </div>
+
+        <div>
+            수정 : [[${post.modifyDate}]]
+        </div>
+
+        <div>
+            작성자 : [[${post.author.username}]]
+        </div>
+
+        <div>
+            제목 : [[${post.subject}]]
+        </div>
+
+        <div>
+            내용 : [[${post.content}]]
+        </div>
+
+        <div class="py-3">
+            <a th:href="@{|/post/list|}" class="btn btn-sm btn-secondary">목록</a>
+            <a th:href="@{|/post/${post.id}/modify|}" class="btn btn-sm btn-secondary">수정</a>
+            <a onclick="return confirm('정말로 삭제하시겠습니까?')" th:href="@{|/post/${post.id}/delete|}" class="btn btn-sm btn-secondary">삭제</a>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>
