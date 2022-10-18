@@ -2,6 +2,7 @@ package com.ll.exam.ebook.app.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ll.exam.ebook.app.base.entity.BaseEntity;
+import com.ll.exam.ebook.app.member.form.ModifyForm;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,6 +23,7 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
     private boolean emailVerified;
+    private String nickname;
 
     public String getName() {
         return username;
@@ -29,5 +31,10 @@ public class Member extends BaseEntity {
 
     public Member(long id) {
         super(id);
+    }
+
+    public Member(ModifyForm form) {
+        this.email=form.getEmail();
+        this.nickname=form.getNickname();
     }
 }

@@ -1,9 +1,6 @@
 package com.ll.exam.ebook.app.base.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -30,6 +27,7 @@ public class BaseEntity {
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
+    @Setter
     private LocalDateTime modifyDate;
     @Transient // 아래 필드가 DB 필드가 되는 것을 막는다.
     @Builder.Default

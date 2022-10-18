@@ -10,3 +10,11 @@ html > body {
     text-underline-position: under;
     color: #444;
 }
+.validation-error{
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.find-id{
+    color: #18c502;
+}
