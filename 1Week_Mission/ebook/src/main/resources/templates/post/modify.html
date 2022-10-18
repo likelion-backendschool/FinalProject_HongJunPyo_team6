@@ -6,8 +6,8 @@
 </head>
 
 <body>
-<section layout:fragment="content">
-    <div class="container">
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
         <h1>글수정</h1>
 
         <script>
@@ -34,22 +34,28 @@
         </script>
 
 
-        <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
-            <div>
-                <span>제목</span>
-                <input type="text" name="subject" th:value="${post.subject}">
+        <form th:action method="POST"  class="flex flex-col gap-3" enctype="multipart/form-data" th:object="${form}" onsubmit="ModifyForm__submit(this); return false; ">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">제목</span>
+                </label>
+                <input  class="input input-bordered" th:field="*{subject}" type="text" name="subject">
             </div>
-            <div>
-                <span>내용</span>
-                <textarea name="content" th:text="${post.content}"></textarea>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">내용</span>
+                </label>
+                <textarea name="content" th:field="*{content}" class="textarea textarea-primary" rows="10" cols="50" ></textarea>
+            </div>
+            <div class="grid">
+                <input class="btn btn-primary" type="submit" value="수정">
             </div>
 
-            <div>
-                <span>글수정</span>
-                <input type="submit" value="수정">
-            </div>
         </form>
-    </div>
-</section>
+
+
+        </div>
+    </section>
+</main>
 </body>
 </html>

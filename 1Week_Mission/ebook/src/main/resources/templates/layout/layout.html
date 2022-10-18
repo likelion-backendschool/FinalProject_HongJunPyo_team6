@@ -82,6 +82,18 @@
                     글목록
                 </span>
             </a>
+            <a href="/member/modify" class="inline-flex">
+                <i class="fa-solid fa-rectang-list"></i>
+                <span class="ml-[2px] hidden sm:block">
+                    정보수정
+                </span>
+            </a>
+            <a href="/member/findUsername" class="inline-flex" sec:authorize="isAnonymous()">
+                <i class="fa-solid fa-rectang-list"></i>
+                <span class="ml-[2px] hidden sm:block">
+                    아이디 찾기
+                </span>
+            </a>
         </div>
     </div>
 </header>

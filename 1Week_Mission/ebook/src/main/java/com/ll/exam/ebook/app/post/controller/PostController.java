@@ -51,9 +51,14 @@ public class PostController {
     }
 
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable long id, HttpServletRequest request, HttpServletResponse response) {
+    public String detail(Model model, @PathVariable long id,@AuthenticationPrincipal MemberContext memberContext) {
         Post post = postService.getPost(id);
+        String username = memberContext.getUsername();
+        if (post.getAuthor().getUsername().equals(username)) {
+            model.addAttribute("access","true");
+        }
         model.addAttribute("post", post);
+
         return "post/detail";
     }
 
@@ -63,7 +68,6 @@ public class PostController {
 
         if (principal==null) {
             return "access_error";
-
         }
         return "post/write";
     }
@@ -82,15 +86,15 @@ public class PostController {
         String msg = "%d번 글이 작성되었습니다.".formatted(post.getId());
         msg = Ut.url.encode(msg);
 
-        return "redirect:/post/%d?msg=%s".formatted(post.getId(), msg);
+        return "redirect:/post/detail/%d?msg=%s".formatted(post.getId(), msg);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String postModify(PostModifyForm postmodifyForm, @PathVariable(name = "id") Long id, Principal principal) {
+    public String postModify(Model model, @PathVariable(name = "id") Long id, Principal principal) {
 
         Post post = this.postService.getPost(id);
-
+        PostModifyForm postmodifyForm=new PostModifyForm();
         if (post == null) {
             throw new DataNotFoundException("%d번 게시글은 존재하지 않습니다.");
         }
@@ -102,19 +106,20 @@ public class PostController {
         postmodifyForm.setSubject(post.getSubject());
         postmodifyForm.setContent(post.getContent());
         postmodifyForm.setModifyDate(post.getModifyDate());
+        model.addAttribute("form",postmodifyForm);
 
         return "post/modify";
     }
 
-    @PostMapping("/modify")
-    public String postModify(Model model, @Valid PostModifyForm postmodifyForm, BindingResult bindingResult, Principal principal) {
+    @PostMapping("/modify/{id}")
+    public String postModify(@PathVariable(name = "id") Long id, @Valid PostModifyForm postmodifyForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "post/modify";
         }
         if (principal == null) {
             return "access_error";
         }
-        Post post = this.postService.getPost(postmodifyForm.getId());
+        Post post = this.postService.getPost(id);
 
         if (post == null) {
             throw new DataNotFoundException("%d번 게시글은 존재하지 않습니다.");
@@ -126,7 +131,7 @@ public class PostController {
 
         postService.modify(post.getId(), postmodifyForm.getSubject(), postmodifyForm.getContent());
 
-        return String.format("redirect:/article/detail/%s", postmodifyForm.getId());
+        return String.format("redirect:/post/detail/%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")

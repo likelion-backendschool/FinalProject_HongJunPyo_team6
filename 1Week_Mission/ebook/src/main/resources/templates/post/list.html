@@ -5,24 +5,32 @@
 </head>
 <body>
 <main layout:fragment="main">
-    <section>
-        <div class="container">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div style="width:80%; margin: 100px 100px;">
             <h1>글 리스트</h1>
-            <ul>
-                <li th:each="post : ${posts}" class="flex gap-2 items-center">
-                    <a th:href="@{|/post/${post.id}|}" th:text="|번호 : ${post.id}|">
-                    </a>
 
-                    <a th:href="@{|/post/${post.id}|}" th:text="|제목 : ${post.title}|">
-                    </a>
+            <table class="table" style="width:100%; color: black;">
+                <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">수정일</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                    <a th:href="@{|/post/${post.id}|}" th:text="|작성자 : ${post.author.username}|">
-                    </a>
+                <tr th:each="post : ${posts}"  th:onclick="|location.href='/post/detail/${post.id}'|" >
+                    <th th:text="${post.id}">1</th>
+                    <td th:text="${post.subject}">Mark</td>
+                    <td th:text="${post.author.username}">Otto</td>
+                    <td th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}">@mdo</td>
 
-                    <a th:href="@{|/post/${post.id}|}" th:text="|수정날짜 : ${post.modifyDate}|">
+                </tr>
 
-                </li>
-            </ul>
+                </tbody>
+            </table>
+
         </div>
         <button type="button" th:onclick="|location.href='@{/post/write}'|" class="btn btn-secondary btn-outline">글 작성</button>
     </section>

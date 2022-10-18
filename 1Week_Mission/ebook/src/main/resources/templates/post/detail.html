@@ -6,37 +6,57 @@
 </head>
 
 <body>
-<section layout:fragment="content">
-    <div class="container">
-        <h1>글 상세페이지</h1>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div class="container py-5">
+            <h1>글 상세페이지</h1>
+            <div class="hero min-m-screen bg-base-200" style="color:black; word-break:break-all;">
+                <div class="text-left" style="width: 100%;padding: 1rem;">
+                    <div>
+                        <h1 class="text-5xl font-bold">제목 : [[${post.subject}]]</h1>
+                        <div class="d-flex justify-between" style="display:flex">
+                            <div>
+                                <p class="py-6">
+                                    작성일 : [[${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}]]
 
-        <div>
-            작성 : [[${post.createDate}]]
+                                </p>
+                            </div>
+                            <div>
+                                <p class="py-6">
+                                    마지막 수정일 : [[${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}]]
+
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="py-6">
+                                작성자 : [[${post.author.username}]]
+                            </p>
+                        </div>
+
+                        <hr>
+                        <div >
+                            <p class="py-6">
+                                내용 : [[${post.content}]]
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="py-3">
+                <a th:href="@{|/post/list|}" class="btn btn-sm btn-secondary">목록</a>
+
+                <a th:if="${access}" th:href="@{|/post/modify/${post.id}|}" class="btn btn-sm btn-secondary">수정</a>
+                <a th:if="${access}"     onclick="return confirm('정말로 삭제하시겠습니까?')" th:href="@{|/post/delete/${post.id}|}"
+                   class="btn btn-sm btn-secondary">삭제</a>
+            </div>
+
         </div>
-
-        <div>
-            수정 : [[${post.modifyDate}]]
-        </div>
-
-        <div>
-            작성자 : [[${post.author.username}]]
-        </div>
-
-        <div>
-            제목 : [[${post.subject}]]
-        </div>
-
-        <div>
-            내용 : [[${post.content}]]
-        </div>
-
-        <div class="py-3">
-            <a th:href="@{|/post/list|}" class="btn btn-sm btn-secondary">목록</a>
-            <a th:href="@{|/post/${post.id}/modify|}" class="btn btn-sm btn-secondary">수정</a>
-            <a onclick="return confirm('정말로 삭제하시겠습니까?')" th:href="@{|/post/${post.id}/delete|}" class="btn btn-sm btn-secondary">삭제</a>
-        </div>
-
-    </div>
-</section>
+    </section>
+</main>
 </body>
 </html>

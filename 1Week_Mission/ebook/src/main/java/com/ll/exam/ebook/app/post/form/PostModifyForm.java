@@ -14,5 +14,4 @@ public class PostModifyForm extends BaseEntity {
     @NotEmpty
     private String content;
 
-//    private LocalDateTime modifyDate;
 }

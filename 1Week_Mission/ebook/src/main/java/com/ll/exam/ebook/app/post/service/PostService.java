@@ -24,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
 
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     public Page<Post> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -48,6 +48,7 @@ public class PostService {
                 .author(new Member(authorId))
                 .subject(subject)
                 .content(content)
+                .deleteYn(DeleteType.NORMAL)
                 .createDate(LocalDateTime.now())
                 .modifyDate(LocalDateTime.now())
                 .build();
@@ -62,7 +63,7 @@ public class PostService {
     }
 
     public List<Post> findAllPost() {
-        return postRepository.findAll();
+        return postRepository.findByDeleteYn(DeleteType.NORMAL);
     }
 
     @Transactional
