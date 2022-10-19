@@ -49,4 +49,6 @@ public class MemberService {
     public String findByEmail(String email) {
         return memberRepository.findUsernameByEmail(email).orElse(null);
     }
+
+
 }
