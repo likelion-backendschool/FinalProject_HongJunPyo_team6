@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
 
     Page<Post> findByDeleteYn(DeleteType deleteYn, Pageable pageable);
     List<Post> findByDeleteYn(DeleteType deleteYn);

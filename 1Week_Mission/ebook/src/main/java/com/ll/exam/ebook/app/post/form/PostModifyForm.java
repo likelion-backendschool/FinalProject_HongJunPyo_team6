@@ -14,4 +14,5 @@ public class PostModifyForm extends BaseEntity {
     @NotEmpty
     private String content;
 
+    private String hashTagContents;
 }
