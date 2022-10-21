@@ -1,6 +1,5 @@
 package com.ll.exam.ebook.app.post.service;
 
-import com.ll.exam.ebook.app.hashTag.service.HashTagService;
 import com.ll.exam.ebook.app.member.entity.Member;
 import com.ll.exam.ebook.app.post.entity.DeleteType;
 import com.ll.exam.ebook.app.post.entity.Post;
@@ -24,8 +23,6 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-
-    private final HashTagService hashTagService;
 
     public Page<Post> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();

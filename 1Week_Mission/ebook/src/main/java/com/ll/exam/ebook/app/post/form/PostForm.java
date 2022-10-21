@@ -12,6 +12,4 @@ public class PostForm {
 
     @NotEmpty
     private String content;
-
-    private String hashTagContents;
 }
