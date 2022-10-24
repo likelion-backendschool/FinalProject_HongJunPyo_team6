@@ -26,10 +26,10 @@ public class OrderItem extends BaseEntity {
     @ToString.Exclude
     private Order order;
 
-    private LocalDateTime payDate;
-
     @ManyToOne(fetch = LAZY)
     private Product product;
+
+    private LocalDateTime payDate;
 
     private int price; // 결제금액
     private int salePrice; // 실제판매가
@@ -43,6 +43,8 @@ public class OrderItem extends BaseEntity {
     public OrderItem(Product product) {
         this.product = product;
         this.price = product.getPrice();
+        this.salePrice = product.getSalePrice();
+        this.wholesalePrice = product.getWholesalePrice();
     }
 
     public void setPaymentDone() {

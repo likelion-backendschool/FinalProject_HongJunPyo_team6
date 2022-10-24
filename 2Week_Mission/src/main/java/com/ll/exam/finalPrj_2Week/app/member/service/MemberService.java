@@ -2,6 +2,8 @@ package com.ll.exam.finalPrj_2Week.app.member.service;
 
 import com.ll.exam.finalPrj_2Week.app.AppConfig;
 import com.ll.exam.finalPrj_2Week.app.base.dto.RsData;
+import com.ll.exam.finalPrj_2Week.app.cash.entity.CashLog;
+import com.ll.exam.finalPrj_2Week.app.cash.service.CashService;
 import com.ll.exam.finalPrj_2Week.app.email.service.EmailService;
 import com.ll.exam.finalPrj_2Week.app.emailVerification.service.EmailVerificationService;
 import com.ll.exam.finalPrj_2Week.app.member.entity.Member;
@@ -9,6 +11,8 @@ import com.ll.exam.finalPrj_2Week.app.member.exception.AlreadyJoinException;
 import com.ll.exam.finalPrj_2Week.app.member.repository.MemberRepository;
 import com.ll.exam.finalPrj_2Week.app.security.dto.MemberContext;
 import com.ll.exam.finalPrj_2Week.util.Ut;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -28,6 +32,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
     private final EmailService emailService;
+    private final CashService cashService;
 
     @Transactional
     public Member join(String username, String password, String email, String nickname) {
@@ -139,5 +144,26 @@ public class MemberService {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+    }
+
+    @Transactional
+    public RsData<AddCashRsDataBody> addCash(Member member, long price, String eventType) {
+        CashLog cashLog = cashService.addCash(member, price, eventType);
+
+        long newRestCash = member.getRestCash() + cashLog.getPrice();
+        member.setRestCash(newRestCash);
+        memberRepository.save(member);
+
+        return RsData.of(
+                "S-1",
+                "성공",
+                new AddCashRsDataBody(cashLog, newRestCash)
+        );
+    }
+    @Data
+    @AllArgsConstructor
+    public static class AddCashRsDataBody {
+        CashLog cashLog;
+        long newRestCash;
     }
 }
