@@ -2,6 +2,7 @@ package com.ll.exam.finalPrj_2Week.app.attr.repository;
 
 import com.ll.exam.finalPrj_2Week.app.attr.entity.Attr;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -33,9 +34,10 @@ public interface AttrRepository extends JpaRepository<Attr, Long> {
             )
             ON DUPLICATE KEY UPDATE
             modify_date = NOW(),
-            `value` = :value,
+            value = :value,
             expire_date = IFNULL(:expireDate, expire_date) 
             """, nativeQuery = true)
+    @Modifying
     void upsert(@Param("relTypeCode") String relTypeCode, @Param("relId") long relId, @Param("typeCode") String typeCode, @Param("type2Code") String type2Code, @Param("value") String value, @Param("expireDate") LocalDateTime expireDate);
 
     Optional<Attr> findByRelTypeCodeAndRelIdAndTypeCodeAndType2Code(String relTypeCode, long relId, String typeCode, String type2Code);

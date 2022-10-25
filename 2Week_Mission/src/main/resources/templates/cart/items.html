@@ -33,7 +33,9 @@
             </form>
 
             <a href="javascript:;" onclick="OrderCartItemsForm__submit();" class="btn btn-primary btn-sm">전체 주문하기</a>
-            <form method="POST" name="orderCartItemsForm" th:action="@{|/order/makeOrder|}" hidden></form>
+            <form method="POST" name="orderCartItemsForm" th:action="@{|/order/makeOrder|}" hidden>
+                <input type="hidden" name="ids">
+            </form>
 
             <script>
                 // 전체선택 체크박스
@@ -73,7 +75,16 @@
                 }
 
                 function OrderCartItemsForm__submit() {
-                    document.orderCartItemsForm.submit();
+
+                    if ($('.cartItemCheckbox:checked').length > 0) {
+                        let form = document.orderCartItemsForm;
+                        const $checked = $('.cartItemCheckbox:checked');
+                        const ids = $checked.map((index, el) => $(el).val()).get();
+                        form.ids.value = ids;
+                        form.submit();
+                    } else {
+                        alert("한개 이상 제품을 체크해주세요");
+                    }
                 }
             </script>
         </div>

@@ -59,9 +59,9 @@ public class OrderController {
 
     @PostMapping("/makeOrder")
     @PreAuthorize("isAuthenticated()")
-    public String makeOrder(@AuthenticationPrincipal MemberContext memberContext) {
+    public String makeOrder(@AuthenticationPrincipal MemberContext memberContext,String ids) {
         Member member = memberContext.getMember();
-        Order order = orderService.createFromCart(member);
+        Order order = orderService.createFromCart(member,ids);
         String redirect = "redirect:/order/%d".formatted(order.getId()) + "?msg=" + Ut.url.encode("%d번 주문이 생성되었습니다.".formatted(order.getId()));
 
         return redirect;
@@ -74,14 +74,15 @@ public class OrderController {
 
         Member actor = memberContext.getMember();
 
-//        long restCash = memberService.getRestCash(actor);
+        long restCash = memberService.getRestCash(actor);
 
         if (orderService.actorCanSee(actor, order) == false) {
             throw new ActorCanNotSeeOrderException();
         }
 
         model.addAttribute("order", order);
-//        model.addAttribute("actorRestCash", restCash);
+
+        model.addAttribute("actorRestCash", restCash);
 
         return "order/detail";
     }

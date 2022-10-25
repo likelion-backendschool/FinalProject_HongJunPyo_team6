@@ -10,17 +10,22 @@ import com.ll.exam.finalPrj_2Week.app.order.repository.OrderItemRepository;
 import com.ll.exam.finalPrj_2Week.app.order.repository.OrderRepository;
 import com.ll.exam.finalPrj_2Week.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Slf4j
 public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
@@ -28,27 +33,22 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     @Transactional
-    public Order createFromCart(Member buyer) {
+    public Order createFromCart(Member buyer, String ids) {
 
         // 입력된 회원의 장바구니 아이템들을 전부 가져온다.
 
         // 만약에 특정 장바구니의 상품옵션이 판매불능이면 삭제
         // 만약에 특정 장바구니의 상품옵션이 판매가능이면 주문품목으로 옮긴 후 삭제
-
+        List<Long> collect = Arrays.stream(ids.split(",")).mapToLong(Long::valueOf).boxed().collect(toList());
         List<CartItem> cartItems = cartService.getItemsByBuyer(buyer);
-
         List<OrderItem> orderItems = new ArrayList<>();
-
         for (CartItem cartItem : cartItems) {
             Product product = cartItem.getProduct();
-
-            if (product.isOrderable()) {
+            Long id = cartItem.getId();
+            if (product.isOrderable()&&collect.contains(id)) {
                 orderItems.add(new OrderItem(product));
             }
-
-            cartService.removeItem(cartItem);
         }
-
         return create(buyer, orderItems);
     }
 
@@ -88,7 +88,14 @@ public class OrderService {
         memberService.addCash(buyer, payPrice * -1, "주문__%d__사용__예치금".formatted(order.getId()));
 
         order.setPaymentDone();
+        removeCart(order, buyer);
         orderRepository.save(order);
+    }
+
+    private void removeCart(Order order, Member buyer) {
+        order.getOrderItems().forEach(i->
+                cartService.removeItem(buyer,i.getProduct().getId())
+        );
     }
 
     @Transactional
@@ -131,8 +138,10 @@ public class OrderService {
         if ( useRestCash > 0 ) {
             memberService.addCash(buyer, useRestCash * -1, "주문__%d__사용__예치금".formatted(order.getId()));
         }
-
         order.setPaymentDone();
+
+        removeCart(order, buyer);
+
         orderRepository.save(order);
     }
 

@@ -16,22 +16,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface InitDataBefore {
-    default void before(MemberService memberService, PostService articleService, ProductService productService, CartService cartService, OrderService orderService){
+    default void before(MemberService memberService, PostService articleService, ProductService productService, CartService cartService, OrderService orderService) {
         class Helper {
             public Order order(Member member, List<Product> products) {
                 for (int i = 0; i < products.size(); i++) {
                     Product product = products.get(i);
-
-                    cartService.addItem(member, product);
+                    cartService.addItem(member, product).getProduct().getId();
                 }
-
-                return orderService.createFromCart(member);
+                String join = String.join(",", products.stream().map(i -> String.valueOf(i.getId())).toList());
+                return orderService.createFromCart(member, join);
             }
         }
         Helper helper = new Helper();
 
         String password = "1234";
-        Member member1 = memberService.join("user1", "1234", "user1@test.com", null);
+        Member member1 = memberService.join("user1", "1234", "user1@test.com", "jsjs");
         Member member2 = memberService.join("user2", "1234", "user2@test.com", "홍길순");
 
         Post post1 = articleService.write(member1, "제목1", "내용1", "<p>내용1</p>","#자바 #프로그래밍");
@@ -80,11 +79,11 @@ public interface InitDataBefore {
 
 
         // 3번 주문 : 결제 전
-        Order order3 = helper.order(member2, Arrays.asList(
+        /*Order order3 = helper.order(member2, Arrays.asList(
                         product1,
                         product2
                 )
-        );
+        );*/
         cartService.addItem(member1, product1);
         cartService.addItem(member1, product2);
         cartService.addItem(member1, product3);

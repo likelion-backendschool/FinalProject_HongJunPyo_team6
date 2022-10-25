@@ -8,6 +8,7 @@ import com.ll.exam.finalPrj_2Week.app.product.service.ProductService;
 import com.ll.exam.finalPrj_2Week.app.security.dto.MemberContext;
 import com.ll.exam.finalPrj_2Week.util.Ut;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/cart")
+@Slf4j
 public class CartController {
     private final CartService cartService;
     private final ProductService productService;

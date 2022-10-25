@@ -3,7 +3,6 @@ package com.ll.exam.finalPrj_2Week.app.base.initData;
 import com.ll.exam.finalPrj_2Week.app.cart.service.CartService;
 import com.ll.exam.finalPrj_2Week.app.member.service.MemberService;
 import com.ll.exam.finalPrj_2Week.app.order.service.OrderService;
-import com.ll.exam.finalPrj_2Week.app.post.entity.Post;
 import com.ll.exam.finalPrj_2Week.app.post.service.PostService;
 import com.ll.exam.finalPrj_2Week.app.product.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
