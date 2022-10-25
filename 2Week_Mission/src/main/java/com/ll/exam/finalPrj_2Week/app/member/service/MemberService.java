@@ -160,6 +160,13 @@ public class MemberService {
                 new AddCashRsDataBody(cashLog, newRestCash)
         );
     }
+
+    public long getRestCash(Member member) {
+        Member foundMember = findByUsername(member.getUsername()).get();
+
+        return foundMember.getRestCash();
+    }
+
     @Data
     @AllArgsConstructor
     public static class AddCashRsDataBody {

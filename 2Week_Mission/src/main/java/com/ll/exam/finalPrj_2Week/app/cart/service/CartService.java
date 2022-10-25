@@ -59,4 +59,19 @@ public class CartService {
         cartItemRepository.delete(cartItem);
     }
 
+    public void removeItem(
+            Member buyer,
+            Long productId
+    ) {
+        Product product = new Product(productId);
+        removeItem(buyer, product);
+    }
+
+    public Optional<CartItem> findItemById(long id) {
+        return cartItemRepository.findById(id);
+    }
+
+    public boolean actorCanDelete(Member buyer, CartItem cartItem) {
+        return buyer.getId().equals(cartItem.getBuyer().getId());
+    }
 }
