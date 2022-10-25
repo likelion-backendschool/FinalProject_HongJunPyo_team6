@@ -6,12 +6,14 @@ import com.ll.exam.finalPrj_2Week.app.member.entity.Member;
 import com.ll.exam.finalPrj_2Week.app.member.service.MemberService;
 import com.ll.exam.finalPrj_2Week.app.order.entity.Order;
 import com.ll.exam.finalPrj_2Week.app.order.entity.OrderItem;
+import com.ll.exam.finalPrj_2Week.app.order.repository.OrderItemRepository;
 import com.ll.exam.finalPrj_2Week.app.order.repository.OrderRepository;
 import com.ll.exam.finalPrj_2Week.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final MemberService memberService;
+    private final OrderItemRepository orderItemRepository;
 
     @Transactional
     public Order createFromCart(Member buyer) {
@@ -114,5 +117,30 @@ public class OrderService {
 
     public void cancelOrder(Order order) {
         orderRepository.delete(order);
+    }
+
+    @Transactional
+    public void payByTossPayments(Order order, long useRestCash) {
+        Member buyer = order.getBuyer();
+        int payPrice = order.calculatePayPrice();
+
+        long pgPayPrice = payPrice - useRestCash;
+        memberService.addCash(buyer, pgPayPrice, "주문__%d__충전__토스페이먼츠".formatted(order.getId()));
+        memberService.addCash(buyer, pgPayPrice * -1, "주문__%d__사용__토스페이먼츠".formatted(order.getId()));
+
+        if ( useRestCash > 0 ) {
+            memberService.addCash(buyer, useRestCash * -1, "주문__%d__사용__예치금".formatted(order.getId()));
+        }
+
+        order.setPaymentDone();
+        orderRepository.save(order);
+    }
+
+    public boolean actorCanPayment(Member actor, Order order) {
+        return actorCanSee(actor, order);
+    }
+
+    public List<OrderItem> findAllByPayDateBetweenOrderByIdAsc(LocalDateTime fromDate, LocalDateTime toDate) {
+        return orderItemRepository.findAllByPayDateBetween(fromDate, toDate);
     }
 }
