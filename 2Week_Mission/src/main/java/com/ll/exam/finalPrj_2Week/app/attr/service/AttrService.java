@@ -4,6 +4,7 @@ import com.ll.exam.finalPrj_2Week.app.attr.entity.Attr;
 import com.ll.exam.finalPrj_2Week.app.attr.repository.AttrRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,6 @@ public class AttrService {
         long relId = Integer.parseInt(varNameBits[1]);
         String typeCode = varNameBits[2];
         String type2Code = varNameBits[3];
-
         attrRepository.upsert(relTypeCode, relId, typeCode, type2Code, value, expireDate);
     }
 
