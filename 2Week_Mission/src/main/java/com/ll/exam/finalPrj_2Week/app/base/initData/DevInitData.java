@@ -23,5 +23,6 @@ public class DevInitData implements InitDataBefore {
         return args -> {
             before(memberService, postService, productService, cartService, orderService);
         };
+
     }
 }

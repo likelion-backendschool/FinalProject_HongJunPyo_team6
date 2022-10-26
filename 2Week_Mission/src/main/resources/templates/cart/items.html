@@ -16,7 +16,7 @@
 
             <ul>
                 <li th:each="item : ${items}" class="flex items-center">
-                    <input onchange="CartItemCheckbox__changed();" type="checkbox" class="cartItemCheckbox checkbox" th:value="${item.id}">
+                    <input onchange="CartItemCheckbox__changed();" type="checkbox" class="cartItemCheckbox checkbox checked" th:value="${item.id}">
                     <svg width="80" height="80" th:data-jdenticon-value="${item.product.jdenticon}"></svg>
                     <div>
                         <span th:text="${item.product.author.name}"></span> <span

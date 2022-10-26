@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface AttrRepository extends JpaRepository<Attr, Long> {
-    @Query(value = """
+    @Query(value= """
             INSERT INTO attr (
                 create_date,
                 modify_date,

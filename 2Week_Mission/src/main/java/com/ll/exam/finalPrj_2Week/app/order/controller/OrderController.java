@@ -35,9 +35,9 @@ import java.util.Map;
 public class OrderController {
     private final OrderService orderService;
     private final RestTemplate restTemplate = new RestTemplate();
-    private ObjectMapper objectMapper;
-    private MemberService memberService;
-    private CartService cartService;
+    private final ObjectMapper objectMapper;
+    private final MemberService memberService;
+    private final CartService cartService;
 
     @PostMapping("/{id}/payByRestCashOnly")
     @PreAuthorize("isAuthenticated()")

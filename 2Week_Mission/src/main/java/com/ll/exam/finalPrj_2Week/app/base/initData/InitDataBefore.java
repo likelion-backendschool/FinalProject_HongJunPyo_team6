@@ -33,8 +33,8 @@ public interface InitDataBefore {
         Member member1 = memberService.join("user1", "1234", "user1@test.com", "jsjs");
         Member member2 = memberService.join("user2", "1234", "user2@test.com", "홍길순");
 
-        Post post1 = articleService.write(member1, "제목1", "내용1", "<p>내용1</p>","#자바 #프로그래밍");
-        Post post2 = articleService.write(member2, "제목2", "내용2", "<p>내용2</p>","#HTML #프로그래밍");
+        Post post1 = articleService.write(member1, "제목1", "내용1", "<p>내용1</p>", "#자바 #프로그래밍");
+        Post post2 = articleService.write(member2, "제목2", "내용2", "<p>내용2</p>", "#HTML #프로그래밍");
 
 
         List<Post> postList = new ArrayList<>();
@@ -79,7 +79,7 @@ public interface InitDataBefore {
 
 
         // 3번 주문 : 결제 전
-        /*Order order3 = helper.order(member2, Arrays.asList(
+       /* Order order3 = helper.order(member2, Arrays.asList(
                         product1,
                         product2
                 )
