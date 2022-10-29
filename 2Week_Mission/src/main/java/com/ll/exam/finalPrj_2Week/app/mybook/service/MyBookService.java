@@ -1,33 +1,39 @@
 package com.ll.exam.finalPrj_2Week.app.mybook.service;
 
-import com.ll.exam.finalPrj_2Week.app.member.entity.Member;
+import com.ll.exam.finalPrj_2Week.app.base.dto.RsData;
 import com.ll.exam.finalPrj_2Week.app.mybook.entity.MyBook;
 import com.ll.exam.finalPrj_2Week.app.mybook.repository.MyBookRepository;
-import com.ll.exam.finalPrj_2Week.app.order.entity.OrderItem;
-import com.ll.exam.finalPrj_2Week.app.product.entity.Product;
+import com.ll.exam.finalPrj_2Week.app.order.entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MyBookService {
     private final MyBookRepository myBookRepository;
 
     @Transactional
-    public void createMyBook(Member member, Product product){
-        MyBook myBook = MyBook.builder()
-                .product(product)
-                .member(member)
-                .build();
-        myBookRepository.save(myBook);
+    public RsData add(Order order) {
+        order.getOrderItems()
+                .stream()
+                .map(orderItem -> MyBook.builder()
+                        .owner(order.getBuyer())
+                        .orderItem(orderItem)
+                        .product(orderItem.getProduct())
+                        .build())
+                .forEach(myBookRepository::save);
+
+        return RsData.of("S-1", "나의 책장에 추가되었습니다.");
     }
 
-    public void createMyBookList(Member member, List<OrderItem> orderItems){
-        for(OrderItem orderItem: orderItems){
-            createMyBook(member,orderItem.getProduct());
-        }
+    @Transactional
+    public RsData remove(Order order) {
+        order.getOrderItems()
+                .stream()
+                .forEach(orderItem -> myBookRepository.deleteByProductIdAndOwnerId(orderItem.getProduct().getId(), order.getBuyer().getId()));
+
+        return RsData.of("S-1", "나의 책장에서 제거되었습니다.");
     }
 }

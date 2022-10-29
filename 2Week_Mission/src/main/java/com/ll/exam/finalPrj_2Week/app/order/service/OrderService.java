@@ -4,6 +4,7 @@ import com.ll.exam.finalPrj_2Week.app.cart.entity.CartItem;
 import com.ll.exam.finalPrj_2Week.app.cart.service.CartService;
 import com.ll.exam.finalPrj_2Week.app.member.entity.Member;
 import com.ll.exam.finalPrj_2Week.app.member.service.MemberService;
+import com.ll.exam.finalPrj_2Week.app.mybook.service.MyBookService;
 import com.ll.exam.finalPrj_2Week.app.order.entity.Order;
 import com.ll.exam.finalPrj_2Week.app.order.entity.OrderItem;
 import com.ll.exam.finalPrj_2Week.app.order.repository.OrderItemRepository;
@@ -31,6 +32,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberService memberService;
     private final OrderItemRepository orderItemRepository;
+    private final MyBookService myBookService;
 
     @Transactional
     public Order createFromCart(Member buyer,String ids) {
@@ -89,6 +91,7 @@ public class OrderService {
 
         order.setPaymentDone();
         removeCart(order, buyer);
+        myBookService.add(order);
         orderRepository.save(order);
     }
 

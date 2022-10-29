@@ -2,6 +2,7 @@ package com.ll.exam.finalPrj_2Week.app.mybook.entity;
 
 import com.ll.exam.finalPrj_2Week.app.base.entity.BaseEntity;
 import com.ll.exam.finalPrj_2Week.app.member.entity.Member;
+import com.ll.exam.finalPrj_2Week.app.order.entity.OrderItem;
 import com.ll.exam.finalPrj_2Week.app.product.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +22,15 @@ import static javax.persistence.FetchType.LAZY;
 @SuperBuilder
 @ToString(callSuper = true)
 public class MyBook extends BaseEntity {
+    @ManyToOne(fetch = LAZY)
+    @ToString.Exclude
+    private Member owner;
 
     @ManyToOne(fetch = LAZY)
-    private Member member;
-    @ManyToOne(fetch = LAZY)
+    @ToString.Exclude
     private Product product;
 
-    public MyBook(Member actor, Product product) {
-        this.member = actor;
-        this.product = product;
-    }
+    @ManyToOne(fetch = LAZY)
+    @ToString.Exclude
+    private OrderItem orderItem;
 }
