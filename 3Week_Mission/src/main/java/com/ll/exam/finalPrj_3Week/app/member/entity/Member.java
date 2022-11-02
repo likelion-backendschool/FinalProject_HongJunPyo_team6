@@ -61,11 +61,6 @@ public class Member extends BaseEntity {
             authorities.add(new SimpleGrantedAuthority("AUTHOR"));
         }
 
-        // username 이 user1이라면 관리자의 권한을 가진다.
-        if (getUsername().equals("user1")) {
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        }
-
         return authorities;
     }
 }

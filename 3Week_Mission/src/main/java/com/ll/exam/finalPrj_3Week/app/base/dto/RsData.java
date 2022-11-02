@@ -38,11 +38,5 @@ public class RsData<T> {
         return isSuccess() == false;
     }
 
-    public String addMsgToUrl(String url) {
-        if ( isFail() ) {
-            return Ut.url.modifyQueryParam(url, "errorMsg", getMsg());
-        }
 
-        return Ut.url.modifyQueryParam(url, "msg", getMsg());
-    }
 }
